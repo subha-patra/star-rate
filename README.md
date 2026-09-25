@@ -1,98 +1,377 @@
-# ⭐ Angular Star
+# star-rate
 
-A lightweight and customizable **star rating** component for Angular 20+. Supports decimal ratings, hover interactions, read-only mode, and full accessibility.
+[![npm version](https://img.shields.io/npm/v/star-rate)](https://www.npmjs.com/package/star-rate)
+[![npm downloads](https://img.shields.io/npm/dt/star-rate)](https://www.npmjs.com/package/star-rate)
+[![GitHub issues](https://img.shields.io/github/issues/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/issues)
+[![GitHub stars](https://img.shields.io/github/stars/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/stargazers)
+[![GitHub license](https://img.shields.io/github/license/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/blob/main/LICENSE)
 
-> ✅ Supports Angular 20+  
-> 🔧 Fully customizable   
-> 🧪 Easy to test and maintain
+A lightweight universal rating package for JavaScript, Angular, React, Vue, Next/Nuxt, static HTML, and Web Components.
 
----
+- One root import: `import { starRate } from 'star-rate'`
+- No framework runtime dependency
+- Decimal ratings, hover preview, readonly and disabled states
+- Compact readonly product-card display with value and review count
+- Clearable ratings and required validation for forms
+- Rating meaning labels such as Poor, Good, and Excellent
+- RTL support for global products with `dir: 'rtl'` and `<star-rate dir="rtl">`
+- Focused interaction callbacks for hover, focus, blur, clear, and change
+- Theme presets: `default`, `minimal`, `material`, `bootstrap`, `outline`, and `filled`
+- Slot-based custom classes for root, item, icon, visible label, and validation error
+- Star, heart, circle, diamond, and safe custom SVG icons
+- Accessible keyboard slider behavior
+- Form-associated Web Component support with hidden-input fallback
+- Pointer Events for mobile web, Ionic, Capacitor, and Cordova
+- Headless helpers for React Native and custom renderers
+- SSR-safe import
 
-![Star Rating Demo](https://raw.githubusercontent.com/subha-patra/angular-star/refs/heads/main/angular-star.gif)
+Live demo: [https://subha-patra.github.io/star-rate/](https://subha-patra.github.io/star-rate/)
 
-[Demo](https://stackblitz.com/edit/stackblitz-starters-fx2gszmz?file=package.json)
----
-## 📦 Installation
+Repository: [https://github.com/subha-patra/star-rate](https://github.com/subha-patra/star-rate)
+
+## Installation
 
 ```bash
-npm install angular-star
-```
---- 
-
-## Usage
-
-
-Component Setup
-
-```bash
-import { AngularStar, starType } from 'angular-star';
-
-@Component({
-  imports: [...others, AngularStar]
-})
-
-export class <ComponentName> {
-  protected config = signal<starType>({ length: 5 });
-}
-
+npm install star-rate
 ```
 
-Template Example
-```bash 
-<!-- With Event Binding -->
-<angular-star [config]="config()" (getValue)="onGetValue($event)"></angular-star>
+## JavaScript Usage
 
+```ts
+import { starRate } from 'star-rate';
+
+const rating = starRate.create('#rating', {
+  value: 3.5,
+  max: 5,
+  precision: 0.5,
+  icon: 'star',
+  onChange: value => console.log(value)
+});
+
+rating.setValue(4);
 ```
 
+## Mobile Web / Ionic Usage
+
+`star-rate` uses Pointer Events, so tap and drag work in mobile browsers and Ionic webviews.
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#rating', {
+  value: 3.5,
+  max: 5,
+  precision: 0.5
+});
+```
+
+## Theme Presets
+
+Use a preset to get a finished look quickly. Explicit color options still win over theme defaults.
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#rating', {
+  value: 4,
+  theme: 'material'
+});
+```
+
+Available themes: `default`, `minimal`, `material`, `bootstrap`, `outline`, and `filled`.
+
+## Custom Styling Hooks
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#styled-rating', {
+  value: 4,
+  customClass: {
+    root: 'review-rating',
+    item: 'review-rating__item',
+    icon: 'review-rating__icon',
+    label: 'review-rating__label',
+    error: 'review-rating__error'
+  }
+});
+```
+
+Use `customClass: 'my-rating'` as a shorthand when only the root control needs an extra class. Existing `className` still works as a root-only convenience option.
+
+## Clearable Ratings
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#rating', {
+  value: 3,
+  clearable: true
+});
+```
+
+When `clearable` is enabled, clicking the selected rating again resets the value to `0`.
+
+## Readonly Product Cards
+
+Use compact readonly display when you need a small product-card or list rating.
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#rating', {
+  value: 4.5,
+  readonly: true,
+  showValue: true,
+  count: 245,
+  suffix: 'reviews'
+});
+```
+
+```html
+<star-rate
+  value="4.5"
+  readonly
+  show-value
+  count="245"
+  suffix="reviews"
+></star-rate>
+```
+
+This renders a static summary like `4.5 ★ (245 reviews)` while preserving accessible text and form value support when `name` is set.
+
+## Rating Meaning Labels
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#rating', {
+  value: 4,
+  labels: ['Poor', 'Fair', 'Good', 'Very good', 'Excellent'],
+  showLabel: true
+});
+```
+
+The label follows hover, tap, drag, keyboard, and selected values. Decimal values use the next highest label slot, so `3.5` shows `Very good`.
+
+## RTL Support
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#rtl-rating', {
+  value: 3,
+  dir: 'rtl',
+  labels: ['ضعيف', 'مقبول', 'جيد', 'جيد جدا', 'ممتاز'],
+  showLabel: true
+});
+```
+
+Use `dir: 'rtl'` for right-to-left visual fill, pointer/touch math, and horizontal keyboard controls. `ArrowRight` decreases and `ArrowLeft` increases in RTL mode.
+
+## Better Events
+
+```ts
+import { starRate } from 'star-rate';
+
+starRate.create('#rating', {
+  value: 3,
+  clearable: true,
+  onHover: value => console.log('hover', value),
+  onFocus: () => console.log('focus'),
+  onBlur: () => console.log('blur'),
+  onClear: () => console.log('clear'),
+  onChange: value => console.log('change', value)
+});
+```
+
+`onHover` fires only when the preview value changes, so analytics and UI state do not receive duplicate hover spam.
+
+## Required Validation
+
+```ts
+import { starRate } from 'star-rate';
+
+const rating = starRate.create('#rating', {
+  required: true,
+  errorText: 'Please select a rating',
+  name: 'rating'
+});
+
+form.addEventListener('submit', event => {
+  if (!rating.validate()) {
+    event.preventDefault();
+  }
+});
+```
+
+## React Native Headless Usage
+
+React Native cannot render DOM nodes or Web Components. Use the same package for rating math, then render with React Native `Pressable`, `Text`, or SVG components.
+
+```ts
+import { starRate } from 'star-rate';
+
+const value = starRate.valueFromPosition(locationX, width, {
+  max: 5,
+  precision: 0.5,
+  dir: 'rtl'
+});
+```
+
+## Web Component Usage
+
+```html
+<script type="module">
+  import { defineStarRateElement } from 'star-rate';
+  defineStarRateElement();
+</script>
+
+<form id="review-form">
+  <star-rate
+    name="rating"
+    dir="rtl"
+    theme="bootstrap"
+    labels="Poor,Fair,Good,Very good,Excellent"
+    show-label
+    required
+    clearable
+    error-text="Please select a rating"
+  ></star-rate>
+
+  <button type="submit">Submit review</button>
+</form>
+```
+
+Registered Web Components use `ElementInternals` for native form value and required validation when the browser supports it. Older browsers and `starRate.create()` DOM instances keep the hidden-input fallback.
+
+## Framework Usage
+
+```ts
+// Angular: create inside afterNextRender()
+// React: create inside useEffect()
+// Vue/Nuxt: create inside onMounted()
+// Next.js: use inside a client component
+import { starRate } from 'star-rate';
+```
+
+## Options
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | `0` | Initial selected rating. |
+| `max` | `number` | `5` | Total rating icons. |
+| `precision` | `number` | `0.5` | Rating step for click, hover, and keyboard controls. |
+| `dir` | `'ltr' \| 'rtl'` | `'ltr'` | Visual and interaction direction. |
+| `theme` | `'default' \| 'minimal' \| 'material' \| 'bootstrap' \| 'outline' \| 'filled'` | `'default'` | Visual preset. Explicit color options override theme colors. |
+| `icon` | `'star' \| 'heart' \| 'circle' \| 'diamond' \| 'custom'` | `'star'` | Rating icon shape. |
+| `customIcon` | `string` | `''` | Safe SVG string used when `icon` is `custom`. |
+| `color` | `string` | `''` | Single fill color override. |
+| `badColor` | `string` | `#ef4444` | Fill color for low ratings. |
+| `avgColor` | `string` | `#f59e0b` | Fill color for medium ratings. |
+| `goodColor` | `string` | `#22c55e` | Fill color for high ratings. |
+| `emptyColor` | `string` | `#cbd5e1` | Empty icon color. |
+| `spacing` | `string \| number` | `0px` | Gap between icons. |
+| `size` | `extra-small \| small \| medium \| large \| extra-large \| custom` | `medium` | Preset icon size. |
+| `customSize` | `string` | `30px` | Exact icon size when `size` is `custom`. |
+| `readonly` | `boolean` | `false` | Display a rating without user changes. |
+| `showValue` | `boolean` | `false` | For readonly ratings, render a compact summary with one icon and the value. |
+| `count` | `number` | `undefined` | Optional count shown beside a readonly compact summary. |
+| `suffix` | `string` | `''` | Optional label appended to `count`, such as `reviews`. |
+| `disabled` | `boolean` | `false` | Disable focus and interaction. |
+| `clearable` | `boolean` | `false` | Click the current value again to reset to zero. |
+| `required` | `boolean` | `false` | Require a value greater than zero for form validation. |
+| `errorText` | `string` | `Please select a rating` | Inline validation message for required ratings. |
+| `label` | `string` | `Rating` | Accessible slider label. |
+| `labels` | `string[]` | `[]` | Meaning text from low to high, such as Poor through Excellent. |
+| `showLabel` | `boolean` | `false` | Show the matching meaning text for the current preview or selected value. |
+| `name` | `string` | `''` | Form field name. Web Components use `ElementInternals` when supported; DOM instances render a hidden input fallback. |
+| `className` | `string` | `''` | Extra class on the rating control. |
+| `customClass` | `string \| { root?: string; item?: string; icon?: string; label?: string; error?: string }` | `undefined` | Slot classes for root, item, icon, visible label, and validation error. |
+| `onChange` | `(value: number) => void` | `undefined` | Called after user changes the value. |
+| `onHover` | `(value: number) => void` | `undefined` | Called when hover or drag preview moves to a new value. |
+| `onFocus` | `() => void` | `undefined` | Called when the slider receives focus. |
+| `onBlur` | `() => void` | `undefined` | Called when the slider loses focus. |
+| `onClear` | `() => void` | `undefined` | Called when a non-zero value is cleared to zero. |
+
+## Instance And Helper Methods
+
+```ts
+setValue(value: number): void
+getValue(): number
+update(options: Partial<StarRateOptions>): void
+clear(): void
+validate(): boolean
+enable(): void
+disable(): void
+focus(): void
+destroy(): void
+valueFromPosition(x: number, width: number, options?: StarRateValueFromPositionOptions): number
+roundValue(value: number, precision?: number): number
+clampValue(value: number, max?: number): number
+```
+
+## Events
+
+The JavaScript API calls:
+
+```ts
+onChange(value)
+onHover(value)
+onFocus()
+onBlur()
+onClear()
+```
+
+The Web Component dispatches:
+
+| Event | Detail |
+| --- | --- |
+| `star-rate-change` | `{ value }` |
+| `star-rate-hover` | `{ value }` |
+| `star-rate-focus` | `{ value }` |
+| `star-rate-blur` | `{ value }` |
+| `star-rate-clear` | `{ value: 0 }` |
+
+```ts
+event.detail.value
+```
+
+## Accessibility
+
+`star-rate` renders a keyboard-friendly slider with `role="slider"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, and the configured `label`.
+
+Keyboard support:
+
+- Arrow keys adjust by `precision`; left/right are reversed when `dir` is `rtl`
+- Home sets `0`
+- End sets `max`
+- Enter and Space confirm the current preview value
+
+## Migration From `angular-star`
+
+`angular-star` is replaced by `star-rate`.
+
+| Old option | New option |
+| --- | --- |
+| `length` | `max` |
+| `fractions` | `precision` |
+| `iconType` | `icon` |
+| `spaceBetween` | `spacing` |
+
+The old option names still work as migration aliases.
+
 --- 
 
+📛 Badges
 
-## ⚙️ Inputs/Outputs
+![npm](https://img.shields.io/npm/v/star-rate)
+![npm](https://img.shields.io/npm/dt/star-rate)
+![GitHub issues](https://img.shields.io/github/issues/subha-patra/star-rate)
+![GitHub stars](https://img.shields.io/github/stars/subha-patra/star-rate)
+![GitHub license](https://img.shields.io/github/license/subha-patra/star-rate)
 
- | Option            | Type                      |required     | Description                    | Default|
-|-------------------|---------------------------|-------------|----------------------------------|---------|
-| `getValue`        | `Output`                  |    Yes      | Emits the rating value on change | —    | 
-| `config`          | `object`                  |    Yes      | Configuration object (see below) | `{ length: 5 }` |
-
-
-
-## ⚙️ Config Options
-
-
- | Option            | Type                      |required    | Description                    | Default|
-|-------------------|---------------------------|-------------|-------------------------------|---------|
-| `length`          | `number`                  |    Yes      | Total number of stars         | 5       |
-| `value`           | `number`                  |    No       | Default rating value          | 0       |
-| `color`           | `string`                  |    No       | Custom color for all stars (overrides others)| — |
-| `badColor`        | `string`                  |    No       | Color for low (bad) ratings   | `#f20808` |
-| `avgColor`        | `string`                  |    No       | Color for average ratings     | `#f39c12` |
-| `goodColor`       | `string`                  |    No       | Color for high (good) ratings | `#3df400` |
-| `spaceBetween`    | `string` or `number`      |    No       | Space between stars           | `0`       |
-| `icon`            | `string`                  |    No       | HTML entity or icon used as star symbol   | `&#9733;` | 
-
-
----
-
-
-
-### 📘 Option Descriptions
-
-- **`length`**: Sets how many stars are displayed.
-- **`value`**: Displays an initial rating value.
-- **`color`**: Overrides all color settings with a single custom color.
-- **`badColor`**: Color for low ratings.
-- **`avgColor`**: Color for average ratings.
-- **`goodColor`**: Color for high ratings.
-- **`spaceBetween`**: Space between individual stars (e.g., 4px, 0.5rem, or a number).
-- **`icon`**: Custom icon (HTML entity or text) for the stars. Defaults to a solid star.
-
---- 
 
 ## 📄 License
 
-[![License: MIT](https://raw.githubusercontent.com/subha-patra/angular-star/2c845b1a46d7f60a3a7b94c578a865d576c042e5/licence.svg)](LICENSE)
-![npm](https://img.shields.io/npm/v/angular-star)
-![npm](https://img.shields.io/npm/dt/angular-star)
-![GitHub issues](https://img.shields.io/github/issues/subha-patra/angular-star)
-![GitHub stars](https://img.shields.io/github/stars/subha-patra/angular-star)
-![GitHub license](https://img.shields.io/github/license/subha-patra/angular-star)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
