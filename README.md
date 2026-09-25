@@ -1,11 +1,5 @@
 # star-rate
 
-[![npm version](https://img.shields.io/npm/v/star-rate)](https://www.npmjs.com/package/star-rate)
-[![npm downloads](https://img.shields.io/npm/dt/star-rate)](https://www.npmjs.com/package/star-rate)
-[![GitHub issues](https://img.shields.io/github/issues/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/issues)
-[![GitHub stars](https://img.shields.io/github/stars/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/stargazers)
-[![GitHub license](https://img.shields.io/github/license/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/blob/main/LICENSE)
-
 A lightweight universal rating package for JavaScript, Angular, React, Vue, Next/Nuxt, static HTML, and Web Components.
 
 - One root import: `import { starRate } from 'star-rate'`
@@ -365,11 +359,11 @@ The old option names still work as migration aliases.
 
 📛 Badges
 
-![npm](https://img.shields.io/npm/v/star-rate)
-![npm](https://img.shields.io/npm/dt/star-rate)
-![GitHub issues](https://img.shields.io/github/issues/subha-patra/star-rate)
-![GitHub stars](https://img.shields.io/github/stars/subha-patra/star-rate)
-![GitHub license](https://img.shields.io/github/license/subha-patra/star-rate)
+[![npm version](https://img.shields.io/npm/v/star-rate)](https://www.npmjs.com/package/star-rate)
+[![npm downloads](https://img.shields.io/npm/dt/star-rate)](https://www.npmjs.com/package/star-rate)
+[![GitHub issues](https://img.shields.io/github/issues/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/issues)
+[![GitHub stars](https://img.shields.io/github/stars/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/stargazers)
+[![GitHub license](https://img.shields.io/github/license/subha-patra/star-rate)](https://github.com/subha-patra/star-rate/blob/main/LICENSE)
 
 
 ## 📄 License
